@@ -3,24 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador Interactivo v30 (PWA)</title>
+    <title>Entrenador Interactivo v31 (SW Simple)</title>
     
     <!-- Chosen Palette: Futuristic Violet -->
-    <!-- Application Structure Plan: Se utiliza una arquitectura de "vistas" de una sola p&#225;gina (SPA) controlada por estado. La navegaci&#243;n principal es un panel de d&#237;as (Vista 1). Al seleccionar un d&#237;a, el usuario pasa a un "asistente" lineal (Vista 2) que lo gu&#237;a paso a paso. Este asistente intercambia varias "tarjetas" (Vista 3: Ejercicio, Vista 4: Calentamiento Continuo, Vista 5: HIIT, Vista 6: Descanso). Esta estructura de asistente es la m&#225;s l&#243;gica porque la "fuente de informaci&#243;n" no es un conjunto de datos para explorar, sino un proceso lineal (una rutina) que debe ser experimentado en un orden estricto. La interfaz est&#225; dise&#241;ada para minimizar la carga cognitiva, mostrando solo la informaci&#243;n del paso actual. -->
-    <!-- Visualization & Content Choices: 
-        - Report Info: Rutina semanal completa. Goal: Navegaci&#243;n y ejecuci&#243;n. Viz/Presentation: M&#250;ltiples vistas intercambiables (Grid de d&#237;as, tarjetas de ejercicio, vistas de temporizador). Interaction: Clic, Timers. Justification: Es la &#250;nica forma de hacer que un proceso lineal sea interactivo y f&#225;cil de seguir sin abrumar al usuario.
-        - Report Info: Secuencias de calentamiento (Fuerza y HIIT). Goal: Ejecuci&#243;n guiada y fluida. Viz/Presentation: Vista de "Calentamiento Continuo" (HTML/CSS) con barra de progreso y temporizador. Interaction: Inicio/Pausa/Salto, progresi&#243;n autom&#225;tica con sub-pasos ("partes"). Justification: Automatiza la parte m&#225;s tediosa (el calentamiento) y la convierte en una experiencia "sin manos".
-        - Report Info: Ejercicios por tiempo (Planchas, etc.). Goal: Guiar la duraci&#243;n. Viz/Presentation: Bloque de temporizador en l&#237;nea (HTML/JS). Interaction: Iniciar/Pausar/Saltar. Justification: Proporciona la herramienta (temporizador) en el contexto exacto donde se necesita.
-        - Report Info: Periodos de descanso. Goal: Guiar la recuperaci&#243;n y reducir la fricci&#243;n. Viz/Presentation: Vista de "Descanso" dedicada (HTML/JS). Interaction: Inicio autom&#225;tico, Pausa/Salto. Justification: Mantiene el ritmo del entrenamiento y prepara al usuario para lo que sigue ("Siguiente: ...").
-        - Report Info: T&#233;cnica y Progresi&#243;n. Goal: Informaci&#243;n bajo demanda. Viz/Presentation: Texto colapsable (HTML/JS). Interaction: Clic (Mostrar/Ocultar). Justification: Mantiene la interfaz principal limpia, tal como pidi&#243; el usuario ("disimulada").
-        - Report Info: Sonidos y Vibraci&#243;n. Goal: Feedback no visual. Viz/Presentation: "Beeps" generados por JS (AudioContext) y `navigator.vibrate`. Interaction: Se activan por eventos (fin de temporizador, clic). Justification: Permite al usuario seguir la app sin mirarla, crucial para un entrenamiento.
-    -->
+    <!-- Application Structure Plan: SPA con vistas intercambiables controladas por estado (Menú -> Asistente -> Tarjetas de Paso). Estructura lineal tipo asistente, óptima para seguir una rutina ordenada. -->
+    <!-- Visualization & Content Choices: Menú (Grid HTML), Calentamiento (Vista HTML/JS con temporizador y progreso), Ejercicios (Tarjeta HTML/JS con temporizador/botón de serie), Descanso (Vista HTML/JS con temporizador), HIIT (Vista HTML/JS con temporizador maestro), Info (Texto colapsable HTML/JS), Feedback (Beeps JS/AudioContext + Vibración). Sin visualizaciones complejas, enfocado en guiar el proceso. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <meta name="theme-color" content="#1f2937"/>
-    <!-- INICIO: PWA Manifest Incrustado con nombres de icono estándar -->
     <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkVudHJlbmFkb3IgSW50ZXJhY3Rpdm8iLAogICJzaG9ydF9uYW1lIjogIkVudHJlbmFkb3IiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzExMTgyNyIsCiAgInRoZW1lX2NvbG9yIjogIiMxZjI5MzciLAogICJkZXNjcmlwdGlvbiI6ICJBcGxpY2FjaSZvYWN1dGU7biBwYXJhIHNlZ3VpciBydXRpbmFzIGRlIGVudHJlbmFtaWVudG8gaW50ZXJhY3RpdmFtZW50ZS4iLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJpY29uLTE5Mi5wbmciLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJwdXJwb3NlIjogImFueSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbi01MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
-    <!-- FIN: PWA Manifest Incrustado -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -94,47 +85,40 @@
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <!-- Lunes -->
                 <button id="btn-lunes" data-day="lunes" class="day-card text-left p-6 transition-all duration-300">
                     <span class="block text-sm font-semibold text-violet-400">LUNES 🏋️‍♂️</span>
                     <h2 class="text-xl font-bold mt-1">Día 1: Torso (Empuje)</h2>
                     <p class="text-gray-400 text-sm mt-2">+ 10,000 pasos Zona 2</p>
                 </button>
 
-                <!-- Martes -->
                 <button id="btn-martes" data-day="martes" class="day-card text-left p-6 transition-all duration-300">
                     <span class="block text-sm font-semibold text-violet-400">MARTES 🦵</span>
                     <h2 class="text-xl font-bold mt-1">Día 2: Piernas y Núcleo</h2>
                 </button>
 
-                <!-- Miércoles (Día de Descanso) - Inactivo -->
                 <div class="card text-left p-6 cursor-default opacity-60">
                     <span class="block text-sm font-semibold text-teal-400">MIÉRCOLES 🚶‍♂️</span>
                     <h2 class="text-xl font-bold mt-1">Descanso Activo</h2>
                     <p class="text-gray-400 text-sm mt-2">Caminata Zona 1</p>
                 </div>
 
-                <!-- Jueves -->
                 <button id="btn-jueves" data-day="jueves" class="day-card text-left p-6 transition-all duration-300">
                     <span class="block text-sm font-semibold text-violet-400">JUEVES 🏋️‍♂️</span>
                     <h2 class="text-xl font-bold mt-1">Día 3: Torso (Tracción)</h2>
                     <p class="text-gray-400 text-sm mt-2">+ 10,000 pasos Zona 2</p>
                 </button>
 
-                <!-- Viernes -->
                 <button id="btn-viernes" data-day="viernes" class="day-card text-left p-6 transition-all duration-300">
                     <span class="block text-sm font-semibold text-red-400">VIERNES 🔥</span>
                     <h2 class="text-xl font-bold mt-1">Sesión HIIT 4x4</h2>
                 </button>
 
-                <!-- Sábado -->
                 <button id="btn-sabado" data-day="sabado" class="day-card text-left p-6 transition-all duration-300">
                     <span class="block text-sm font-semibold text-violet-400">SÁBADO 💪</span>
                     <h2 class="text-xl font-bold mt-1">Día 4: Cuerpo Completo</h2>
                     <p class="text-gray-400 text-sm mt-2">Funcional</p>
                 </button>
 
-                <!-- Domingo (Día de Descanso) - Inactivo -->
                 <div class="card text-left p-6 cursor-default opacity-60">
                     <span class="block text-sm font-semibold text-teal-400">DOMINGO 🚶‍♂️</span>
                     <h2 class="text-xl font-bold mt-1">Descanso Activo</h2>
@@ -143,157 +127,110 @@
             </div>
         </div>
 
-        <!-- VISTA: ENTRENAMIENTO (Contenedor principal) -->
+        <!-- VISTA: ENTRENAMIENTO -->
         <div id="workout-stepper" class="hidden">
             <button id="back-to-menu" class="mb-6 px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded-lg text-sm font-medium transition-colors">
                 &larr; Volver al Menú
             </button>
-            
             <h1 id="workout-title" class="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500 mb-4"></h1>
             <p id="step-progress" class="text-center text-gray-400 mb-4 font-medium"></p>
 
-            <!-- VISTA PASO A PASO (Tarjeta Estándar) -->
+            <!-- Tarjeta de Paso Normal -->
             <div id="step-content" class="card p-6 md:p-8 w-full max-w-2xl mx-auto">
-                <h2 id="step-title" class="text-2xl font-bold text-white mb-4"></h2>
-                <p id="step-details" class="text-lg text-gray-300 mb-6"></p>
-
-                <!-- Temporizador de Duración (para Ejercicios por tiempo) -->
-                <div id="duration-timer-block" class="hidden text-center mb-6">
-                    <p class="text-gray-400 text-sm">Tiempo restante para este paso:</p>
-                    <div id="duration-timer-display" class="text-5xl font-extrabold text-teal-400 my-2 timer-display">00:00</div>
-                    <div class="flex justify-center gap-4">
-                        <button id="toggle-duration-timer" class="px-6 py-3 bg-teal-600 hover:bg-teal-500 rounded-lg font-bold transition-colors w-40 shadow-lg shadow-teal-500/20">
-                            Iniciar
-                        </button>
-                        <button id="skip-duration-timer" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">
-                            Saltar Parte
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Bloques de Información (Técnica, Progresión) -->
-                <div class=""> 
-                    <div id="technique-block" class="hidden">
-                        <button id="toggle-technique" class="text-sm font-semibold text-violet-400 hover:text-violet-300 transition-colors">
-                            Mostrar Técnica &darr;
-                        </button>
-                        <div id="technique-content" class="details-content bg-gray-900/50 p-4 rounded-lg mt-2 text-gray-200 text-sm leading-relaxed whitespace-pre-line border border-gray-700/50">
-                        </div>
-                    </div>
-                    
-                    <div id="progression-block" class="hidden">
-                        <button id="toggle-progression" class="text-sm font-semibold text-indigo-300 hover:text-indigo-200 transition-colors">
-                            Mostrar Progresión &darr;
-                        </button>
-                        <div id="progression-content" class="details-content bg-gray-900/50 p-4 rounded-lg mt-2 text-gray-200 text-sm leading-relaxed whitespace-pre-line border border-gray-700/50">
-                        </div>
-                    </div>
-
-                    <div id="skip-exercise-block" class="hidden text-center pt-2 border-t border-gray-700/50"> 
-                        <button id="skip-exercise-btn" class="text-sm font-semibold text-gray-500 hover:text-red-400 transition-colors">
-                            Saltar este ejercicio &rarr;
-                        </button>
-                    </div>
-                </div>
+                 <h2 id="step-title" class="text-2xl font-bold text-white mb-4"></h2>
+                 <p id="step-details" class="text-lg text-gray-300 mb-6"></p>
+                 <div id="duration-timer-block" class="hidden text-center mb-6">
+                     <p class="text-gray-400 text-sm">Tiempo restante:</p>
+                     <div id="duration-timer-display" class="text-5xl font-extrabold text-teal-400 my-2 timer-display">00:00</div>
+                     <div class="flex justify-center gap-4">
+                         <button id="toggle-duration-timer" class="px-6 py-3 bg-teal-600 hover:bg-teal-500 rounded-lg font-bold transition-colors w-40 shadow-lg shadow-teal-500/20">Iniciar</button>
+                         <button id="skip-duration-timer" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">Saltar Parte</button>
+                     </div>
+                 </div>
+                 <div class="">
+                     <div id="technique-block" class="hidden">
+                         <button id="toggle-technique" class="text-sm font-semibold text-violet-400 hover:text-violet-300 transition-colors">Mostrar Técnica &darr;</button>
+                         <div id="technique-content" class="details-content bg-gray-900/50 p-4 rounded-lg mt-2 text-gray-200 text-sm leading-relaxed whitespace-pre-line border border-gray-700/50"></div>
+                     </div>
+                     <div id="progression-block" class="hidden">
+                         <button id="toggle-progression" class="text-sm font-semibold text-indigo-300 hover:text-indigo-200 transition-colors">Mostrar Progresión &darr;</button>
+                         <div id="progression-content" class="details-content bg-gray-900/50 p-4 rounded-lg mt-2 text-gray-200 text-sm leading-relaxed whitespace-pre-line border border-gray-700/50"></div>
+                     </div>
+                     <div id="skip-exercise-block" class="hidden text-center pt-2 border-t border-gray-700/50">
+                         <button id="skip-exercise-btn" class="text-sm font-semibold text-gray-500 hover:text-red-400 transition-colors">Saltar este ejercicio &rarr;</button>
+                     </div>
+                 </div>
             </div>
 
-            <!-- VISTA DE CALENTAMIENTO CONTINUO -->
+            <!-- Vista Calentamiento Continuo -->
             <div id="continuous-warmup-view" class="hidden card p-6 md:p-8 w-full max-w-2xl mx-auto">
-                <div class="mb-4">
-                    <p id="warmup-progress-text" class="text-sm text-gray-400 mb-1">Calentamiento: (Paso 1 de X)</p>
-                    <div class="progress-bar-container">
-                        <div id="warmup-progress-bar" class="progress-bar"></div>
-                    </div>
-                </div>
-
-                <h2 id="warmup-step-status" class="text-2xl font-bold text-center text-green-400 mb-2">¡Prepárate! ⏱️</h2>
-                
-                <div id="warmup-step-timer-display" class="text-6xl font-extrabold text-center text-white my-4 timer-display">00:03</div>
-
-                <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50 min-h-[170px]">
-                    <h3 id="warmup-step-name" class="text-xl font-bold text-white mb-2">...</h3>
-                    <p id="warmup-step-details" class="text-gray-300">...</p>
-                    
-                    <h4 class="text-sm font-semibold text-violet-300 mt-3">Cómo Hacerlo:</h4>
-                    <p id="warmup-step-cue" class="text-white font-medium">...</p>
-                </div>
-
-                <div class="flex justify-center gap-4 mt-8">
-                    <button id="warmup-toggle-pause" class="px-8 py-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg font-bold text-gray-900 transition-colors shadow-lg shadow-yellow-500/20 w-36">
-                        Pausar
-                    </button>
-                    <button id="warmup-skip-all" class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">
-                        Saltar Calentamiento
-                    </button>
-                </div>
+                 <div class="mb-4">
+                     <p id="warmup-progress-text" class="text-sm text-gray-400 mb-1">Calentamiento:</p>
+                     <div class="progress-bar-container">
+                         <div id="warmup-progress-bar" class="progress-bar"></div>
+                     </div>
+                 </div>
+                 <h2 id="warmup-step-status" class="text-2xl font-bold text-center text-green-400 mb-2">¡Prepárate! ⏱️</h2>
+                 <div id="warmup-step-timer-display" class="text-6xl font-extrabold text-center text-white my-4 timer-display">00:03</div>
+                 <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50 min-h-[170px]">
+                     <h3 id="warmup-step-name" class="text-xl font-bold text-white mb-2">...</h3>
+                     <p id="warmup-step-details" class="text-gray-300">...</p>
+                     <h4 class="text-sm font-semibold text-violet-300 mt-3">Cómo Hacerlo:</h4>
+                     <p id="warmup-step-cue" class="text-white font-medium">...</p>
+                 </div>
+                 <div class="flex justify-center gap-4 mt-8">
+                     <button id="warmup-toggle-pause" class="px-8 py-3 bg-yellow-600 hover:bg-yellow-500 rounded-lg font-bold text-gray-900 transition-colors shadow-lg shadow-yellow-500/20 w-36">Pausar</button>
+                     <button id="warmup-skip-all" class="px-8 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">Saltar Calentamiento</button>
+                 </div>
             </div>
 
-            <!-- VISTA HIIT (Tarjeta Especial) -->
+            <!-- Vista HIIT -->
             <div id="hiit-workout-view" class="hidden card p-6 md:p-8 w-full max-w-2xl mx-auto mt-8">
-                <h2 class="text-3xl font-extrabold text-red-400 text-center mb-4">¡HIIT: El Complejo! 🔥</h2>
-                <p id="hiit-round-info" class="text-center text-gray-300 text-lg mb-6">Ronda 1 de 4: Trabajo</p>
-
-                <div class="text-center mb-6">
-                    <p class="text-gray-400 text-sm">Tiempo restante:</p>
-                    <div id="hiit-timer-display" class="text-6xl md:text-7xl font-extrabold text-red-500 my-2 timer-display">00:00</div>
-                </div>
-
-                <div class="flex justify-center gap-4 mb-8">
-                    <button id="hiit-start-pause-btn" class="px-8 py-4 bg-red-600 hover:bg-red-500 rounded-lg font-bold text-xl transition-colors shadow-lg shadow-red-500/20">
-                        Iniciar HIIT
-                    </button>
-                </div>
-
-                <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50">
-                    <h3 class="text-xl font-bold text-white mb-3">El Complejo: (Repetir)</h3>
-                    <ul id="hiit-exercises-list" class="list-disc list-inside text-gray-200 text-lg space-y-2">
-                    </ul>
-                    <p class="text-gray-400 text-sm mt-4">Peso sugerido: Barra vacía (5 kg) o 10 kg.</p>
-                </div>
+                 <h2 class="text-3xl font-extrabold text-red-400 text-center mb-4">¡HIIT: El Complejo! 🔥</h2>
+                 <p id="hiit-round-info" class="text-center text-gray-300 text-lg mb-6">Ronda 1 de 4: Trabajo</p>
+                 <div class="text-center mb-6">
+                     <p class="text-gray-400 text-sm">Tiempo restante:</p>
+                     <div id="hiit-timer-display" class="text-6xl md:text-7xl font-extrabold text-red-500 my-2 timer-display">00:00</div>
+                 </div>
+                 <div class="flex justify-center gap-4 mb-8">
+                     <button id="hiit-start-pause-btn" class="px-8 py-4 bg-red-600 hover:bg-red-500 rounded-lg font-bold text-xl transition-colors shadow-lg shadow-red-500/20">Iniciar HIIT</button>
+                 </div>
+                 <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-700/50">
+                     <h3 class="text-xl font-bold text-white mb-3">El Complejo: (Repetir)</h3>
+                     <ul id="hiit-exercises-list" class="list-disc list-inside text-gray-200 text-lg space-y-2"></ul>
+                     <p class="text-gray-400 text-sm mt-4">Peso sugerido: Barra vacía (5 kg) o 10 kg.</p>
+                 </div>
             </div>
 
-            <!-- VISTA DE DESCANSO -->
+            <!-- Vista Descanso -->
             <div id="rest-timer-block" class="hidden card p-6 md:p-8 w-full max-w-2xl mx-auto">
-                <p class="text-lg text-center text-gray-300 mb-4">Siguiente: <strong id="rest-next-exercise" class="text-white"></strong></p>
-                <p class="text-gray-400 text-sm text-center">Tiempo de descanso:</p>
-                <div id="rest-timer-display" class="text-6xl font-extrabold text-red-400 my-4 text-center timer-display">00:00</div>
-                <div class="flex justify-center gap-4">
-                    <button id="toggle-rest-timer" class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-lg font-bold transition-colors w-40 shadow-lg shadow-red-500/20">
-                        Pausar
-                    </button>
-                    <button id="skip-rest-timer" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">
-                        Saltar Descanso
-                    </button>
-                </div>
+                 <p class="text-lg text-center text-gray-300 mb-4">Siguiente: <strong id="rest-next-exercise" class="text-white"></strong></p>
+                 <p class="text-gray-400 text-sm text-center">Tiempo de descanso:</p>
+                 <div id="rest-timer-display" class="text-6xl font-extrabold text-red-400 my-4 text-center timer-display">00:00</div>
+                 <div class="flex justify-center gap-4">
+                     <button id="toggle-rest-timer" class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-lg font-bold transition-colors w-40 shadow-lg shadow-red-500/20">Pausar</button>
+                     <button id="skip-rest-timer" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors shadow-lg">Saltar Descanso</button>
+                 </div>
             </div>
 
-            <!-- Navegación (Anterior/Siguiente) -->
+            <!-- Navegación -->
             <div id="step-navigation" class="flex justify-between max-w-2xl mx-auto mt-8">
-                <button id="prev-step" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
-                    Anterior
-                </button>
-                <button id="next-step" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-bold text-white transition-colors shadow-lg shadow-indigo-500/30">
-                    Siguiente Paso
-                </button>
+                <button id="prev-step" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>Anterior</button>
+                <button id="next-step" class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-bold text-white transition-colors shadow-lg shadow-indigo-500/30">Siguiente Paso</button>
             </div>
         </div>
 
-        <!-- MODAL DE CONFIRMACIÓN DE SALTO -->
+        <!-- Modal Confirmación -->
         <div id="skip-confirm-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
             <div class="card p-6 w-full max-w-sm text-center">
                 <h3 class="text-xl font-bold text-yellow-400 mb-4">¿Confirmar Salto? ⚠️</h3>
                 <p class="text-gray-300 mb-6">¿Estás seguro de que quieres saltar el calentamiento?</p>
                 <div class="flex justify-center gap-4">
-                    <button id="confirm-skip-no" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors w-full">
-                        No, Continuar
-                    </button>
-                    <button id="confirm-skip-yes" class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-lg font-bold transition-colors w-full shadow-lg shadow-red-500/20">
-                        Sí, Saltar
-                    </button>
+                    <button id="confirm-skip-no" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-bold transition-colors w-full">No, Continuar</button>
+                    <button id="confirm-skip-yes" class="px-6 py-3 bg-red-600 hover:bg-red-500 rounded-lg font-bold transition-colors w-full shadow-lg shadow-red-500/20">Sí, Saltar</button>
                 </div>
             </div>
         </div>
-
     </div>
 
     
@@ -1166,6 +1103,7 @@
             return -1; 
         }
 
+
         function goToNextStep() {
             stopTimer();
             if (currentStepIndex < workoutSteps.length - 1) {
@@ -1310,6 +1248,7 @@
             });
         }
 
+
         function endContinuousWarmup() {
             continuousWarmupView.classList.add('hidden');
             
@@ -1323,6 +1262,7 @@
                 showDaySelectorView();
             }
         }
+
 
         function setupHiitWorkout(step) {
             hiitTotalRounds = step.rounds;
@@ -1411,94 +1351,115 @@
         }
 
         
+        // --- INICIO: Service Worker Simplificado (Solo HTML + Iconos) ---
         const swCode = `
-            const CACHE_NAME = 'entrenador-interactivo-cache-v1';
+            const CACHE_NAME = 'entrenador-interactivo-cache-v2-simple';
+            // Solo cachear el HTML principal y los iconos
             const urlsToCache = [
-                './', 
-                'icon-192.png', // Añadir iconos al cache
-                'icon-512.png', // Añadir iconos al cache
-                'https://cdn.tailwindcss.com', 
-                'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap' 
+                './', // El index.html
+                'icon-192.png',
+                'icon-512.png'
+            ];
+            // Recursos externos que intentaremos servir desde la red primero, luego caché
+            const externalResources = [
+                'https://cdn.tailwindcss.com',
+                'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap'
             ];
 
             self.addEventListener('install', event => {
-                console.log('SW: Instalando...');
+                console.log('SW (Simple): Instalando...');
                 event.waitUntil(
                     caches.open(CACHE_NAME)
                         .then(cache => {
-                            console.log('SW: Cache abierto, añadiendo URLs iniciales');
-                             return cache.addAll(urlsToCache).catch(error => {
-                                console.error('SW: Fallo al cachear URLs iniciales:', error);
-                                urlsToCache.forEach(url => {
-                                    cache.add(url).catch(err => console.error(\`SW: Fallo al cachear \${url}:\`, err));
-                                });
-                                return Promise.resolve();
-                             });
+                            console.log('SW (Simple): Cache abierto, añadiendo URLs cruciales');
+                            // Usar addAll solo para lo esencial (HTML + iconos)
+                            return cache.addAll(urlsToCache);
                         })
                         .then(() => {
-                           console.log('SW: Instalado y archivos iniciales cacheados (o intento realizado). Pasando a activar.');
-                           return self.skipWaiting(); 
+                           console.log('SW (Simple): Instalado y archivos cruciales cacheados. Pasando a activar.');
+                           return self.skipWaiting();
+                        })
+                        .catch(error => {
+                            console.error('SW (Simple): Fallo al cachear URLs cruciales:', error);
+                            // Si falla aquí, la instalación probablemente falle, lo cual está bien.
                         })
                 );
             });
 
             self.addEventListener('activate', event => {
-                console.log('SW: Activando...');
+                console.log('SW (Simple): Activando...');
                 event.waitUntil(
                     caches.keys().then(cacheNames => {
                         return Promise.all(
                             cacheNames.map(cacheName => {
                                 if (cacheName !== CACHE_NAME) {
-                                    console.log('SW: Borrando caché antigua:', cacheName);
+                                    console.log('SW (Simple): Borrando caché antigua:', cacheName);
                                     return caches.delete(cacheName);
                                 }
                             })
                         );
                     }).then(() => {
-                        console.log('SW: Activado y listo para controlar clientes.');
-                        return self.clients.claim(); 
+                        console.log('SW (Simple): Activado y listo para controlar clientes.');
+                        return self.clients.claim();
                     })
                 );
             });
 
             self.addEventListener('fetch', event => {
-               
-                event.respondWith(
-                    caches.match(event.request)
-                        .then(response => {
-                            if (response) {
-                               
-                                return response;
-                            }
-                            
-                           
-                            return fetch(event.request).then(
-                                networkResponse => {
-                                    // Cachear sólo recursos conocidos o el propio HTML
-                                     if (urlsToCache.includes(event.request.url) || event.request.url.endsWith('.png') || event.request.url.endsWith('.html') || event.request.url === self.location.origin + '/') {
-                                         const responseToCache = networkResponse.clone();
-                                         caches.open(CACHE_NAME)
-                                             .then(cache => {
-                                                 console.log('SW: Cacheando nueva respuesta para:', event.request.url);
-                                                 cache.put(event.request, responseToCache);
-                                             });
-                                    } else {
-                                        console.log('SW: Respuesta no cacheable:', event.request.url);
-                                    }
+                const requestUrl = event.request.url;
+                 console.log('SW (Simple): Fetch interceptado para:', requestUrl);
 
-                                    return networkResponse;
-                                }
-                            ).catch(error => {
-                                console.error('SW: Error de fetch (probablemente offline y no en caché):', error, event.request.url);
-                                // Intentar devolver la página principal cacheada si falla cualquier otra cosa y es una navegación
-                                if (event.request.mode === 'navigate') {
-                                    return caches.match('./');
+                // Estrategia: Cache First para los recursos cruciales cacheados al instalar
+                if (urlsToCache.some(url => requestUrl.endsWith(url.replace('./','/')))) {
+                     console.log('SW (Simple): Usando Cache First para recurso crucial:', requestUrl);
+                     event.respondWith(
+                         caches.match(event.request).then(response => {
+                             return response || fetch(event.request).then(networkResponse => {
+                                 // Si lo obtenemos de la red, lo cacheamos por si acaso para la próxima vez
+                                 let responseToCache = networkResponse.clone();
+                                 caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
+                                 return networkResponse;
+                             }).catch(() => {
+                                console.error('SW (Simple): Falló al buscar recurso crucial en red y caché:', requestUrl);
+                                // Podríamos devolver una respuesta de error genérica aquí
+                             });
+                         })
+                     );
+                }
+                // Estrategia: Network First para recursos externos (Tailwind, Fonts)
+                else if (externalResources.some(url => requestUrl.startsWith(url))) {
+                    console.log('SW (Simple): Usando Network First para recurso externo:', requestUrl);
+                    event.respondWith(
+                        fetch(event.request).then(networkResponse => {
+                            // Si la red responde bien, cachearlo y devolverlo
+                            let responseToCache = networkResponse.clone();
+                            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
+                             console.log('SW (Simple): Recurso externo obtenido de red y cacheado:', requestUrl);
+                            return networkResponse;
+                        }).catch(() => {
+                            // Si la red falla, intentar servir desde caché
+                            console.log('SW (Simple): Red falló para recurso externo, intentando caché:', requestUrl);
+                            return caches.match(event.request).then(response => {
+                                if (response) {
+                                    console.log('SW (Simple): Sirviendo recurso externo desde caché:', requestUrl);
+                                    return response;
+                                } else {
+                                     console.error('SW (Simple): Recurso externo no encontrado en red ni caché:', requestUrl);
+                                    // Falló todo
                                 }
                             });
                         })
-                );
+                    );
+                }
+                 // Para cualquier otra petición (ej. el propio manifest incrustado, etc.), simplemente ir a la red
+                 else {
+                     console.log('SW (Simple): Petición no gestionada por estrategias, yendo a red:', requestUrl);
+                     // No llamar a event.respondWith permite que el navegador maneje la petición normalmente
+                 }
             });
         `;
+        // --- FIN: Service Worker Simplificado ---
+
 
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
