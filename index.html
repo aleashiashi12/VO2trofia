@@ -5,25 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entrenador Interactivo v27 (15s Isométricos)</title>
     
-    <!-- === NUEVAS LÍNEAS PARA PWA === -->
-    <!-- Color de la barra de estado en Android -->
+    <!-- === LÍNEAS PARA PWA === -->
     <meta name="theme-color" content="#111827">
-    <!-- Enlace al Web App Manifest -->
     <link rel="manifest" href="manifest.json">
-    <!-- Icono para dispositivos Apple -->
     <link rel="apple-touch-icon" href="icon-192.png">
-    <!-- === FIN DE NUEVAS LÍNEAS === -->
+    <!-- === FIN DE LÍNEAS PWA === -->
 
     <!-- Chosen Palette: Futuristic Violet -->
-    <!-- Application Structure Plan: Se utiliza una arquitectura de "vistas" de una sola p&#225;gina (SPA) controlada por estado. La navegaci&#243;n principal es un panel de d&#237;as (Vista 1). Al seleccionar un d&#237;a, el usuario pasa a un "asistente" lineal (Vista 2) que lo gu&#237;a paso a paso. Este asistente intercambia varias "tarjetas" (Vista 3: Ejercicio, Vista 4: Calentamiento Continuo, Vista 5: HIIT, Vista 6: Descanso). Esta estructura de asistente es la m&#225;s l&#243;gica porque la "fuente de informaci&#243;n" no es un conjunto de datos para explorar, sino un proceso lineal (una rutina) que debe ser experimentado en un orden estricto. La interfaz est&#225; dise&#241;ada para minimizar la carga cognitiva, mostrando solo la informaci&#243;n del paso actual. -->
-    <!-- Visualization & Content Choices: 
-        - Report Info: Rutina semanal completa. Goal: Navegaci&#243;n y ejecuci&#243;n. Viz/Presentation: M&#250;ltiples vistas intercambiables (Grid de d&#237;as, tarjetas de ejercicio, vistas de temporizador). Interaction: Clic, Timers. Justification: Es la &#250;nica forma de hacer que un proceso lineal sea interactivo y f&#225;cil de seguir sin abrumar al usuario.
-        - Report Info: Secuencias de calentamiento (Fuerza y HIIT). Goal: Ejecuci&#243;n guiada y fluida. Viz/Presentation: Vista de "Calentamiento Continuo" (HTML/CSS) con barra de progreso y temporizador. Interaction: Inicio/Pausa/Salto, progresi&#243;n autom&#225;tica con sub-pasos ("partes"). Justification: Automatiza la parte m&#225;s tediosa (el calentamiento) y la convierte en una experiencia "sin manos".
-        - Report Info: Ejercicios por tiempo (Planchas, etc.). Goal: Guiar la duraci&#243;n. Viz/Presentation: Bloque de temporizador en l&#237;nea (HTML/JS). Interaction: Iniciar/Pausar/Saltar. Justification: Proporciona la herramienta (temporizador) en el contexto exacto donde se necesita.
-        - Report Info: Periodos de descanso. Goal: Guiar la recuperaci&#243;n y reducir la fricci&#243;n. Viz/Presentation: Vista de "Descanso" dedicada (HTML/JS). Interaction: Inicio autom&#225;tico, Pausa/Salto. Justification: Mantiene el ritmo del entrenamiento y prepara al usuario para lo que sigue ("Siguiente: ...").
-        - Report Info: T&#233;cnica y Progresi&#243;n. Goal: Informaci&#243;n bajo demanda. Viz/Presentation: Texto colapsable (HTML/JS). Interaction: Clic (Mostrar/Ocultar). Justification: Mantiene la interfaz principal limpia, tal como pidi&#243; el usuario ("disimulada").
-        - Report Info: Sonidos y Vibraci&#243;n. Goal: Feedback no visual. Viz/Presentation: "Beeps" generados por JS (AudioContext) y `navigator.vibrate`. Interaction: Se activan por eventos (fin de temporizador, clic). Justification: Permite al usuario seguir la app sin mirarla, crucial para un entrenamiento.
-    -->
+    <!-- ... (El resto de tus comentarios de planificación) ... -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,9 +77,6 @@
     </style>
 </head>
 <body class="bg-gray-900 text-white min-h-screen antialiased">
-
-    <!-- El resto de tu HTML (<body>) va aquí... -->
-    <!-- ... (Todo tu contenido de <div> class="container" ... </div>) ... -->
 
     <div class="container mx-auto max-w-4xl p-4 md:p-8">
 
@@ -302,10 +288,21 @@
             </div>
         </div>
 
+        <!-- <!-- NUEVO: MODAL DE FINALIZACIÓN DE RUTINA -->
+        <div id="completion-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
+            <div class="card p-8 w-full max-w-sm text-center">
+                <span class="text-6xl mb-4 block">🏆</span>
+                <h3 id="completion-title" class="text-2xl font-bold text-green-400 mb-3">¡Rutina Completada!</h3>
+                <p id="completion-message" class="text-gray-300 text-lg mb-8">¡Excelente trabajo!</p>
+                <button id="close-completion-modal" class="w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-500 rounded-lg font-bold text-white transition-colors shadow-lg shadow-indigo-500/30">
+                    Volver al Menú
+                </button>
+            </div>
+        </div>
+
     </div>
 
     
-    <!-- TU SCRIPT ORIGINAL -->
     <script>
         
         const allData = {
@@ -551,7 +548,6 @@
 6. **Descenso:** Baja la barra de forma controlada, empujando la cadera hacia atrás primero y luego doblando las rodillas.`, 
                           progression: 'Aumenta el peso en la barra.' },
                         
-                        /* --- CAMBIO AQUÍ --- */
                         { type: 'exercise', name: 'Empuje Isométrico contra Tanque', sets: 4, reps: '15 segundos de empuje máximo', rest: 60, 
                           technique: `1. **Objeto:** Busca una pared sólida o un objeto que sea imposible de mover (como el "tanque" que mencionas).
 2. **Posición:** Colócate frente a la pared en una posición atlética: pies separados, rodillas ligeramente flexionadas, torso inclinado un poco hacia adelante.
@@ -559,7 +555,6 @@
 4. **Empuje:** Tensa todo tu cuerpo (abdomen, glúteos, piernas) y empieza a empujar la pared con toda tu fuerza, como si quisieras derribarla.
 5. **Intención:** Concéntrate en empujar. La fuerza debe venir de tu pecho, hombros y tríceps, transferida desde tus pies. Mantén la tensión máxima durante el tiempo indicado.`, 
                           progression: 'Aumenta la duración del empuje. Empuja más fuerte.' },
-                        /* --- FIN DEL CAMBIO --- */
                         
                         { type: 'exercise', name: 'Burpees (con Chaleco Lastrado)', sets: 3, reps: '8-12', rest: 75, 
                           technique: `1. **Preparación:** Ponte el chaleco de 10 kg.
@@ -590,7 +585,6 @@
             }
         };
 
-        // ... (Todo tu JavaScript original desde 'let currentDayKey = null;' hasta 'hiitStopTimer();') ...
         let currentDayKey = null;
         let currentDayData = null;
         let workoutSteps = [];
@@ -751,6 +745,12 @@
         const skipConfirmModal = document.getElementById('skip-confirm-modal');
         const confirmSkipYesBtn = document.getElementById('confirm-skip-yes');
         const confirmSkipNoBtn = document.getElementById('confirm-skip-no');
+
+        // NUEVO: Referencias al modal de finalización
+        const completionModal = document.getElementById('completion-modal');
+        const completionTitle = document.getElementById('completion-title');
+        const completionMessage = document.getElementById('completion-message');
+        const closeCompletionModalBtn = document.getElementById('close-completion-modal');
 
         let warmupQueue = [];
         let currentWarmupStepIdx = 0;
@@ -936,6 +936,13 @@
                     warmupTogglePause.classList.remove('bg-green-500', 'shadow-green-500/20');
                 }
             });
+
+            // NUEVO: Event listener para el botón del modal de finalización
+            closeCompletionModalBtn.addEventListener('click', () => {
+                playFeedback('click');
+                completionModal.classList.add('hidden');
+                showDaySelectorView(); // Vuelve al menú principal
+            });
         }
 
         function selectDay(dayKey) {
@@ -1006,6 +1013,9 @@
             hiitWorkoutView.classList.add('hidden'); 
             continuousWarmupView.classList.add('hidden'); 
             stepContent.classList.remove('hidden'); 
+
+            // NUEVO: Asegurarse de que el modal de completado esté oculto
+            completionModal.classList.add('hidden');
 
             stepProgress.textContent = `Paso ${currentStepIndex + 1} de ${workoutSteps.length}`;
             
@@ -1082,7 +1092,7 @@
 
             prevStepBtn.disabled = (currentStepIndex === 0);
             
-            if (currentStepIndex === workoutSteps.length - 1 && (step.type !== 'exercise' || currentExerciseSeries === step.sets)) {
+            if (currentStepIndex === workoutSteps.length - 1 && (step.type !== 'exercise' || (step.type === 'exercise' && !parseDurationFromReps(step.reps) && currentExerciseSeries === step.sets))) {
                 nextStepBtn.textContent = 'Finalizar Rutina ✅';
             }
         }
@@ -1099,59 +1109,80 @@
 
             if (step.type === 'exercise') {
                 
-                if (step.rest > 0) {
-                    playFeedback('start'); 
-                    
-                    stepContent.classList.add('hidden');
-                    stepNavigation.classList.add('hidden'); 
-                    restTimerBlock.classList.remove('hidden');
+                const durationInfo = parseDurationFromReps(step.reps);
+                const isLastSet = (currentExerciseSeries === step.sets);
+                
+                // Si tiene duración, no entra aquí, se maneja en 'toggleDurationTimer'
+                // Esta lógica es solo para ejercicios de REPS
+                if (!durationInfo) {
+                    if (step.rest > 0 && !isLastSet) { // Descanso entre series
+                        playFeedback('start'); 
+                        
+                        stepContent.classList.add('hidden');
+                        stepNavigation.classList.add('hidden'); 
+                        restTimerBlock.classList.remove('hidden');
 
-                    let nextStepText;
-                    const isLastSet = (currentExerciseSeries === step.sets); 
+                        let nextStepText = `Serie ${currentExerciseSeries + 1} de ${step.sets} - ${step.name}`;
+                        restNextExercise.textContent = nextStepText;
+                        
+                        timerSecondsRemaining = step.rest;
+                        toggleRestTimerBtn.textContent = 'Pausar'; 
+                        toggleRestTimerBtn.disabled = false;
+                        
+                        startTimer(timerSecondsRemaining, restTimerDisplay, () => {
+                            playFeedback('complete'); 
+                            
+                            restTimerBlock.classList.add('hidden');
+                            stepNavigation.classList.remove('hidden');
+                            stepContent.classList.remove('hidden'); 
+                            
+                            currentExerciseSeries++; 
+                            renderCurrentStep(); 
+                        });
+                    } else if (step.rest > 0 && isLastSet) { // Descanso al final del ejercicio
+                        playFeedback('start');
+                        
+                        stepContent.classList.add('hidden');
+                        stepNavigation.classList.add('hidden');
+                        restTimerBlock.classList.remove('hidden');
 
-                    if (!isLastSet) {
-                         nextStepText = `Serie ${currentExerciseSeries + 1} de ${step.sets} - ${step.name}`;
-                    } else {
                         const nextExercise = workoutSteps.slice(currentStepIndex + 1).find(s => s.type === 'exercise');
+                        let nextStepText;
                         if (nextExercise) {
                             nextStepText = `Siguiente: ${nextExercise.name}`;
                         } else {
                             const finalStep = workoutSteps.slice(currentStepIndex + 1).find(s => s.type === 'cooldown' || s.type === 'cardio');
                             nextStepText = finalStep ? `Siguiente: ${finalStep.name}` : "¡Último descanso!";
                         }
-                    }
-                    restNextExercise.textContent = nextStepText;
-                    
-                    timerSecondsRemaining = step.rest;
-                    toggleRestTimerBtn.textContent = 'Pausar'; 
-                    toggleRestTimerBtn.disabled = false;
-                    
-                    startTimer(timerSecondsRemaining, restTimerDisplay, () => {
-                        playFeedback('complete'); 
+                        restNextExercise.textContent = nextStepText;
                         
-                        restTimerBlock.classList.add('hidden');
-                        stepNavigation.classList.remove('hidden');
-                        stepContent.classList.remove('hidden'); 
-                        
-                        if (!isLastSet) {
-                            currentExerciseSeries++; 
-                            renderCurrentStep(); 
-                        } else {
+                        timerSecondsRemaining = step.rest;
+                        toggleRestTimerBtn.textContent = 'Pausar';
+                        toggleRestTimerBtn.disabled = false;
+
+                        startTimer(timerSecondsRemaining, restTimerDisplay, () => {
+                            playFeedback('complete');
+                            
+                            restTimerBlock.classList.add('hidden');
+                            stepNavigation.classList.remove('hidden');
+                            stepContent.classList.remove('hidden');
+                            
                             currentExerciseSeries = 0; 
                             goToNextStep();
+                        });
+
+                    } else { // Sin descanso (o es la última serie sin descanso)
+                        if (!isLastSet) {
+                            currentExerciseSeries++;
+                            renderCurrentStep(); 
+                        } else {
+                            currentExerciseSeries = 0;
+                            goToNextStep();
                         }
-                    });
-                } else {
-                     const isLastSet = (currentExerciseSeries === step.sets);
-                    if (!isLastSet) {
-                        currentExerciseSeries++;
-                        renderCurrentStep(); 
-                    } else {
-                        currentExerciseSeries = 0;
-                        goToNextStep();
                     }
                 }
-
+                // Si es un ejercicio por DURACIÓN, la lógica de 'descanso' se llama
+                // desde la función 'toggleDurationTimer'
             } else {
                 goToNextStep();
             }
@@ -1163,12 +1194,19 @@
                 currentStepIndex++;
                 renderCurrentStep();
             } else {
+                // NUEVO: Lógica de finalización con Modal
                 playFeedback('final'); 
-                // Se reemplaza alert() por un log, ya que alert() puede ser bloqueado
-                console.log('¡Rutina completada! ¡Felicidades!');
-                // Idealmente, aquí se mostraría un modal de "Fin" en lugar de un alert.
-                // Por ahora, solo volvemos al menú.
-                showDaySelectorView();
+                
+                // Personalizar el mensaje
+                const dayName = currentDayData.dayName;
+                completionTitle.textContent = `¡${dayName} Completado! 🏆`;
+                completionMessage.textContent = "¡Excelente trabajo! Has terminado la rutina de hoy. Descansa y recupérate.";
+
+                // Mostrar el modal
+                completionModal.classList.remove('hidden');
+                
+                // Ya no llamamos a showDaySelectorView() aquí. 
+                // El botón del modal lo hará.
             }
         }
 
@@ -1204,7 +1242,70 @@
                     } else {
                         playFeedback('complete'); 
                         currentExercisePart = 0; 
-                        handleNextStepAction(); 
+                        
+                        // Ahora, manejamos el descanso DESPUÉS de un ejercicio por tiempo
+                        const isLastSet = (currentExerciseSeries === step.sets);
+                        
+                        if (step.rest > 0 && !isLastSet) { // Descanso entre series
+                            stepContent.classList.add('hidden');
+                            stepNavigation.classList.add('hidden'); 
+                            durationTimerBlock.classList.add('hidden');
+                            restTimerBlock.classList.remove('hidden');
+
+                            let nextStepText = `Serie ${currentExerciseSeries + 1} de ${step.sets} - ${step.name}`;
+                            restNextExercise.textContent = nextStepText;
+                            
+                            timerSecondsRemaining = step.rest;
+                            toggleRestTimerBtn.textContent = 'Pausar'; 
+                            toggleRestTimerBtn.disabled = false;
+                            
+                            startTimer(timerSecondsRemaining, restTimerDisplay, () => {
+                                playFeedback('complete');
+                                restTimerBlock.classList.add('hidden');
+                                stepNavigation.classList.remove('hidden');
+                                stepContent.classList.remove('hidden'); 
+                                
+                                currentExerciseSeries++; 
+                                renderCurrentStep(); 
+                            });
+                        } else if (step.rest > 0 && isLastSet) { // Descanso al final del ejercicio
+                             stepContent.classList.add('hidden');
+                            stepNavigation.classList.add('hidden');
+                            durationTimerBlock.classList.add('hidden');
+                            restTimerBlock.classList.remove('hidden');
+
+                            const nextExercise = workoutSteps.slice(currentStepIndex + 1).find(s => s.type === 'exercise');
+                            let nextStepText;
+                            if (nextExercise) {
+                                nextStepText = `Siguiente: ${nextExercise.name}`;
+                            } else {
+                                const finalStep = workoutSteps.slice(currentStepIndex + 1).find(s => s.type === 'cooldown' || s.type === 'cardio');
+                                nextStepText = finalStep ? `Siguiente: ${finalStep.name}` : "¡Último descanso!";
+                            }
+                            restNextExercise.textContent = nextStepText;
+                            
+                            timerSecondsRemaining = step.rest;
+                            toggleRestTimerBtn.textContent = 'Pausar';
+                            toggleRestTimerBtn.disabled = false;
+
+                            startTimer(timerSecondsRemaining, restTimerDisplay, () => {
+                                playFeedback('complete');
+                                restTimerBlock.classList.add('hidden');
+                                stepNavigation.classList.remove('hidden');
+                                stepContent.classList.remove('hidden');
+                                
+                                currentExerciseSeries = 0; 
+                                goToNextStep();
+                            });
+                        } else { // Sin descanso
+                             if (!isLastSet) {
+                                currentExerciseSeries++;
+                                renderCurrentStep(); 
+                            } else {
+                                currentExerciseSeries = 0;
+                                goToNextStep();
+                            }
+                        }
                     }
                 });
             }
@@ -1372,11 +1473,15 @@
 
         function startHiitPhase() {
             if (hiitCurrentRound > hiitTotalRounds) {
-                playFeedback('complete'); 
-                // Se reemplaza alert()
-                console.log('¡Sesión HIIT completada!');
-                nextStepBtn.disabled = false; 
-                goToNextStep(); 
+                playFeedback('final'); // NUEVO: Usar el sonido final aquí también
+                
+                // NUEVO: Mostrar modal de finalización para HIIT
+                completionTitle.textContent = `¡HIIT Completado! 🔥`;
+                completionMessage.textContent = "¡Increíble sesión! Has terminado el HIIT de hoy.";
+                completionModal.classList.remove('hidden');
+                
+                // No llamamos a goToNextStep() ni showDaySelectorView()
+                // El modal se encargará
                 return;
             }
 
@@ -1412,7 +1517,7 @@
 
     </script>
 
-    <!-- === NUEVO SCRIPT PARA REGISTRAR EL SERVICE WORKER === -->
+    <!-- === SCRIPT PARA REGISTRAR EL SERVICE WORKER === -->
     <script>
         // Registrar el Service Worker para la funcionalidad Offline
         if ('serviceWorker' in navigator) {
@@ -1430,3 +1535,5 @@
 
 </body>
 </html>
+
+
