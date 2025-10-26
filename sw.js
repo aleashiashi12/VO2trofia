@@ -1,12 +1,14 @@
 // Define un nombre y versión para el caché
-const CACHE_NAME = 'entrenador-interactivo-v1';
+const CACHE_NAME = 'entrenador-vo2trofia-v1'; // Cambié el nombre para forzar la actualización
 
 // Lista de archivos fundamentales de la app para guardar en caché
+// ¡RUTAS RELATIVAS ACTUALIZADAS!
 const assetsToCache = [
-    '/',
-    '/index.html'
+    '.',
+    'index.html',
+    'manifest.json'
     // Los recursos externos (Tailwind, Google Fonts) se cachearán dinámicamente
-    // la primera vez que se soliciten, gracias a la estrategia "cache-first" de abajo.
+    // la primera vez que se soliciten.
 ];
 
 // Evento 'install': Se dispara cuando el Service Worker se instala
@@ -26,6 +28,11 @@ self.addEventListener('install', event => {
 
 // Evento 'fetch': Se dispara cada vez que la app pide un recurso (CSS, JS, imagen, etc.)
 self.addEventListener('fetch', event => {
+    // Ignorar peticiones que no sean GET
+    if (event.request.method !== 'GET') {
+        return;
+    }
+    
     event.respondWith(
         // 1. Intenta encontrar el recurso en el caché
         caches.match(event.request)
@@ -39,7 +46,8 @@ self.addEventListener('fetch', event => {
                 return fetch(event.request).then(
                     networkResponse => {
                         // 3. Y si la respuesta de red es válida, la guarda en caché para el futuro
-                        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
+                        // Comprobamos que es una respuesta válida y no de un CDN de terceros (opaco)
+                        if (!networkResponse || networkResponse.status !== 200 || (networkResponse.type !== 'basic' && networkResponse.type !== 'cors')) {
                             return networkResponse; // Devuelve la respuesta aunque no sea válida, sin cachearla
                         }
 
@@ -57,8 +65,8 @@ self.addEventListener('fetch', event => {
             })
             .catch(err => {
                 // Manejo de error si falla tanto el caché como la red
-                // Podrías devolver una página offline personalizada aquí
                 console.error('Error en el fetch del Service Worker:', err);
+                // Podrías devolver una página offline.html personalizada aquí si la tuvieras
             })
     );
 });
