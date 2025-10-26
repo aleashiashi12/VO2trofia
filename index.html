@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador Interactivo v32 (PWA Mínima)</title>
+    <title>Entrenador Interactivo v33 (2 Archivos)</title>
     
     <!-- Chosen Palette: Futuristic Violet -->
     <!-- Application Structure Plan: SPA con vistas intercambiables controladas por estado (Menú -> Asistente -> Tarjetas de Paso). Estructura lineal tipo asistente, óptima para seguir una rutina ordenada. -->
@@ -11,9 +11,8 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <meta name="theme-color" content="#1f2937"/>
-    <!-- INICIO: PWA Manifest Incrustado (Súper Simplificado) -->
+    <!-- Manifest sigue incrustado, ahora referencia ./ para la start_url -->
     <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkVudHJlbmFkb3IgSW50ZXJhY3Rpdm8iLAogICJzaG9ydF9uYW1lIjogIkVudHJlbmFkb3IiLAogICJzdGFydF91cmwiOiAiLi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxMTE4MjciLAogICJ0aGVtZV9jb2xvciI6ICIjMWYyOTM3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbi0xOTIucG5nIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkiCiAgICB9CiAgXQp9">
-    <!-- FIN: PWA Manifest Incrustado -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -1353,100 +1352,16 @@
         }
 
         
-        // --- INICIO: Service Worker Ultra Simplificado ---
-        const swCode = `
-            const CACHE_NAME = 'entrenador-interactivo-cache-v3-minimal';
-            // Solo cachear el HTML principal y el icono principal
-            const urlsToCache = [
-                './', // El index.html
-                'icon-192.png' // El icono mínimo requerido por el manifest simple
-            ];
-
-            self.addEventListener('install', event => {
-                console.log('SW (Minimal): Instalando...');
-                event.waitUntil(
-                    caches.open(CACHE_NAME)
-                        .then(cache => {
-                            console.log('SW (Minimal): Cache abierto, añadiendo URLs mínimas');
-                            // Intentar cachear solo lo esencialísimo
-                            return cache.addAll(urlsToCache);
-                        })
-                        .then(() => {
-                           console.log('SW (Minimal): Instalado y archivos mínimos cacheados.');
-                           return self.skipWaiting();
-                        })
-                        .catch(error => {
-                            console.error('SW (Minimal): Fallo CRÍTICO al cachear URLs mínimas:', error);
-                            // Si esto falla, la PWA no se instalará correctamente.
-                        })
-                );
-            });
-
-            self.addEventListener('activate', event => {
-                console.log('SW (Minimal): Activando...');
-                event.waitUntil(
-                    caches.keys().then(cacheNames => {
-                        return Promise.all(
-                            cacheNames.map(cacheName => {
-                                if (cacheName !== CACHE_NAME) {
-                                    console.log('SW (Minimal): Borrando caché antigua:', cacheName);
-                                    return caches.delete(cacheName);
-                                }
-                            })
-                        );
-                    }).then(() => {
-                        console.log('SW (Minimal): Activado y listo.');
-                        return self.clients.claim();
-                    })
-                );
-            });
-
-            self.addEventListener('fetch', event => {
-                 // Estrategia: Cache First MUY simple, solo para lo cacheado en install
-                 console.log('SW (Minimal): Fetch interceptado para:', event.request.url);
-                 // Determina si la URL solicitada coincide con las cacheadas (considerando la base path)
-                 const isCachedUrl = urlsToCache.some(url => {
-                     // './' se resuelve a la URL base del SW scope
-                     if (url === './') return event.request.url === self.registration.scope;
-                     // Para otros archivos, comprueba si la URL termina con el nombre del archivo cacheado
-                     return event.request.url.endsWith(url);
-                 });
-
-
-                 if (isCachedUrl) {
-                      console.log('SW (Minimal): Intentando servir desde caché:', event.request.url);
-                      event.respondWith(
-                          caches.match(event.request).then(response => {
-                              // Si está en caché, devolverlo. Si no, ir a red (y no cachear la respuesta)
-                              return response || fetch(event.request).then(networkResponse => {
-                                   console.log('SW (Minimal): Sirviendo desde red (no encontrado en caché):', event.request.url);
-                                   return networkResponse;
-                               }).catch(err => {
-                                   console.error('SW (Minimal): Error buscando en red y caché:', err, event.request.url);
-                               });
-                          })
-                      );
-                 } else {
-                     // Para todo lo demás (Tailwind, Fonts, etc.), simplemente ir a la red
-                     console.log('SW (Minimal): Petición no cacheada, yendo directo a red:', event.request.url);
-                     // No llamamos a event.respondWith, dejamos que el navegador lo maneje
-                 }
-            });
-        `;
-        // --- FIN: Service Worker Ultra Simplificado ---
-
-
+        // --- Registro del Service Worker (Ahora desde sw.js) ---
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                const swBlob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(swBlob);
-
-                navigator.serviceWorker.register(swUrl)
+                // Registrar sw.js que debe estar en la misma carpeta
+                navigator.serviceWorker.register('./sw.js') 
                     .then(registration => {
-                        console.log('ServiceWorker (Minimal) registrado con éxito con scope: ', registration.scope);
+                        console.log('ServiceWorker (sw.js) registrado con éxito con scope: ', registration.scope);
                     })
                     .catch(error => {
-                        console.log('Registro de ServiceWorker (Minimal) fallido: ', error);
+                        console.log('Registro de ServiceWorker (sw.js) fallido: ', error);
                     });
             });
         }
