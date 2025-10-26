@@ -2,11 +2,12 @@
   "name": "VO2trofia",
   "short_name": "VO2trofia",
   "description": "Entrenador VO2trofia: Tu app de rutinas de fuerza y HIIT.",
-  "start_url": "/index.html",
+  "start_url": ".",
   "display": "standalone",
   "background_color": "#111827",
   "theme_color": "#111827",
   "orientation": "portrait-primary",
+  "scope": ".",
   "icons": [
     {
       "src": "icon-192.png",
