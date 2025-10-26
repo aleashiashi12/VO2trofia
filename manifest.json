@@ -1,7 +1,7 @@
 {
-  "name": "Entrenador Interactivo v27",
-  "short_name": "Entrenador",
-  "description": "Tu entrenador personal interactivo para rutinas de fuerza y HIIT.",
+  "name": "VO2trofia",
+  "short_name": "VO2trofia",
+  "description": "Entrenador VO2trofia: Tu app de rutinas de fuerza y HIIT.",
   "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#111827",
