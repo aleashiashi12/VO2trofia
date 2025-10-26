@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador Interactivo v27 (15s Isométricos)</title>
+    <!-- TÍTULO ACTUALIZADO -->
+    <title>VO2trofia - Entrenador Interactivo</title>
     
     <!-- === LÍNEAS PARA PWA === -->
     <meta name="theme-color" content="#111827">
@@ -11,8 +12,7 @@
     <link rel="apple-touch-icon" href="icon-192.png">
     <!-- === FIN DE LÍNEAS PWA === -->
 
-    <!-- Chosen Palette: Futuristic Violet -->
-    <!-- ... (El resto de tus comentarios de planificación) ... -->
+    <!-- ... (El resto de tus comentarios de <head> no cambia) ... -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -82,8 +82,9 @@
 
         <!-- VISTA: SELECCIÓN DE DÍA -->
         <div id="day-selector">
+            <!-- TÍTULO ACTUALIZADO -->
             <h1 class="text-3xl md:text-4xl font-extrabold text-center mb-8 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-indigo-500">
-                Entrenador Interactivo
+                VO2trofia
             </h1>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
@@ -288,7 +289,7 @@
             </div>
         </div>
 
-        <!-- <!-- NUEVO: MODAL DE FINALIZACIÓN DE RUTINA -->
+        <!-- MODAL DE FINALIZACIÓN DE RUTINA -->
         <div id="completion-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50">
             <div class="card p-8 w-full max-w-sm text-center">
                 <span class="text-6xl mb-4 block">🏆</span>
@@ -550,7 +551,7 @@
                         
                         { type: 'exercise', name: 'Empuje Isométrico contra Tanque', sets: 4, reps: '15 segundos de empuje máximo', rest: 60, 
                           technique: `1. **Objeto:** Busca una pared sólida o un objeto que sea imposible de mover (como el "tanque" que mencionas).
-2. **Posición:** Colócate frente a la pared en una posición atlética: pies separados, rodillas ligeramente flexionadas, torso inclinado un poco hacia adelante.
+2. **Posición:** Colócate frente a la pared en unaposición atlética: pies separados, rodillas ligeramente flexionadas, torso inclinado un poco hacia adelante.
 3. **Contacto:** Coloca tus manos en la pared a la altura del pecho.
 4. **Empuje:** Tensa todo tu cuerpo (abdomen, glúteos, piernas) y empieza a empujar la pared con toda tu fuerza, como si quisieras derribarla.
 5. **Intención:** Concéntrate en empujar. La fuerza debe venir de tu pecho, hombros y tríceps, transferida desde tus pies. Mantén la tensión máxima durante el tiempo indicado.`, 
@@ -585,6 +586,7 @@
             }
         };
 
+        // ... (Todo tu JavaScript desde 'let currentDayKey = null;' hasta 'document.addEventListener('DOMContentLoaded', init);' no cambia) ...
         let currentDayKey = null;
         let currentDayData = null;
         let workoutSteps = [];
@@ -746,7 +748,7 @@
         const confirmSkipYesBtn = document.getElementById('confirm-skip-yes');
         const confirmSkipNoBtn = document.getElementById('confirm-skip-no');
 
-        // NUEVO: Referencias al modal de finalización
+        // Referencias al modal de finalización
         const completionModal = document.getElementById('completion-modal');
         const completionTitle = document.getElementById('completion-title');
         const completionMessage = document.getElementById('completion-message');
@@ -937,7 +939,7 @@
                 }
             });
 
-            // NUEVO: Event listener para el botón del modal de finalización
+            // Event listener para el botón del modal de finalización
             closeCompletionModalBtn.addEventListener('click', () => {
                 playFeedback('click');
                 completionModal.classList.add('hidden');
@@ -1014,7 +1016,7 @@
             continuousWarmupView.classList.add('hidden'); 
             stepContent.classList.remove('hidden'); 
 
-            // NUEVO: Asegurarse de que el modal de completado esté oculto
+            // Asegurarse de que el modal de completado esté oculto
             completionModal.classList.add('hidden');
 
             stepProgress.textContent = `Paso ${currentStepIndex + 1} de ${workoutSteps.length}`;
@@ -1194,7 +1196,7 @@
                 currentStepIndex++;
                 renderCurrentStep();
             } else {
-                // NUEVO: Lógica de finalización con Modal
+                // Lógica de finalización con Modal
                 playFeedback('final'); 
                 
                 // Personalizar el mensaje
@@ -1473,9 +1475,9 @@
 
         function startHiitPhase() {
             if (hiitCurrentRound > hiitTotalRounds) {
-                playFeedback('final'); // NUEVO: Usar el sonido final aquí también
+                playFeedback('final'); // Usar el sonido final aquí también
                 
-                // NUEVO: Mostrar modal de finalización para HIIT
+                // Mostrar modal de finalización para HIIT
                 completionTitle.textContent = `¡HIIT Completado! 🔥`;
                 completionMessage.textContent = "¡Increíble sesión! Has terminado el HIIT de hoy.";
                 completionModal.classList.remove('hidden');
