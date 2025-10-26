@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrenador Interactivo v31 (SW Simple)</title>
+    <title>Entrenador Interactivo v32 (PWA Mínima)</title>
     
     <!-- Chosen Palette: Futuristic Violet -->
     <!-- Application Structure Plan: SPA con vistas intercambiables controladas por estado (Menú -> Asistente -> Tarjetas de Paso). Estructura lineal tipo asistente, óptima para seguir una rutina ordenada. -->
@@ -11,7 +11,9 @@
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <meta name="theme-color" content="#1f2937"/>
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkVudHJlbmFkb3IgSW50ZXJhY3Rpdm8iLAogICJzaG9ydF9uYW1lIjogIkVudHJlbmFkb3IiLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzExMTgyNyIsCiAgInRoZW1lX2NvbG9yIjogIiMxZjI5MzciLAogICJkZXNjcmlwdGlvbiI6ICJBcGxpY2FjaSZvYWN1dGU7biBwYXJhIHNlZ3VpciBydXRpbmFzIGRlIGVudHJlbmFtaWVudG8gaW50ZXJhY3RpdmFtZW50ZS4iLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJpY29uLTE5Mi5wbmciLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIsCiAgICAgICJwdXJwb3NlIjogImFueSIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbi01MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkgbWFza2FibGUiCiAgICB9CiAgXQp9">
+    <!-- INICIO: PWA Manifest Incrustado (Súper Simplificado) -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkVudHJlbmFkb3IgSW50ZXJhY3Rpdm8iLAogICJzaG9ydF9uYW1lIjogIkVudHJlbmFkb3IiLAogICJzdGFydF91cmwiOiAiLi8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiMxMTE4MjciLAogICJ0aGVtZV9jb2xvciI6ICIjMWYyOTM3IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbi0xOTIucG5nIiwKICAgICAgInNpemVzIjogIjE5MngxOTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciLAogICAgICAicHVycG9zZSI6ICJhbnkiCiAgICB9CiAgXQp9">
+    <!-- FIN: PWA Manifest Incrustado -->
 
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -1351,114 +1353,87 @@
         }
 
         
-        // --- INICIO: Service Worker Simplificado (Solo HTML + Iconos) ---
+        // --- INICIO: Service Worker Ultra Simplificado ---
         const swCode = `
-            const CACHE_NAME = 'entrenador-interactivo-cache-v2-simple';
-            // Solo cachear el HTML principal y los iconos
+            const CACHE_NAME = 'entrenador-interactivo-cache-v3-minimal';
+            // Solo cachear el HTML principal y el icono principal
             const urlsToCache = [
                 './', // El index.html
-                'icon-192.png',
-                'icon-512.png'
-            ];
-            // Recursos externos que intentaremos servir desde la red primero, luego caché
-            const externalResources = [
-                'https://cdn.tailwindcss.com',
-                'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap'
+                'icon-192.png' // El icono mínimo requerido por el manifest simple
             ];
 
             self.addEventListener('install', event => {
-                console.log('SW (Simple): Instalando...');
+                console.log('SW (Minimal): Instalando...');
                 event.waitUntil(
                     caches.open(CACHE_NAME)
                         .then(cache => {
-                            console.log('SW (Simple): Cache abierto, añadiendo URLs cruciales');
-                            // Usar addAll solo para lo esencial (HTML + iconos)
+                            console.log('SW (Minimal): Cache abierto, añadiendo URLs mínimas');
+                            // Intentar cachear solo lo esencialísimo
                             return cache.addAll(urlsToCache);
                         })
                         .then(() => {
-                           console.log('SW (Simple): Instalado y archivos cruciales cacheados. Pasando a activar.');
+                           console.log('SW (Minimal): Instalado y archivos mínimos cacheados.');
                            return self.skipWaiting();
                         })
                         .catch(error => {
-                            console.error('SW (Simple): Fallo al cachear URLs cruciales:', error);
-                            // Si falla aquí, la instalación probablemente falle, lo cual está bien.
+                            console.error('SW (Minimal): Fallo CRÍTICO al cachear URLs mínimas:', error);
+                            // Si esto falla, la PWA no se instalará correctamente.
                         })
                 );
             });
 
             self.addEventListener('activate', event => {
-                console.log('SW (Simple): Activando...');
+                console.log('SW (Minimal): Activando...');
                 event.waitUntil(
                     caches.keys().then(cacheNames => {
                         return Promise.all(
                             cacheNames.map(cacheName => {
                                 if (cacheName !== CACHE_NAME) {
-                                    console.log('SW (Simple): Borrando caché antigua:', cacheName);
+                                    console.log('SW (Minimal): Borrando caché antigua:', cacheName);
                                     return caches.delete(cacheName);
                                 }
                             })
                         );
                     }).then(() => {
-                        console.log('SW (Simple): Activado y listo para controlar clientes.');
+                        console.log('SW (Minimal): Activado y listo.');
                         return self.clients.claim();
                     })
                 );
             });
 
             self.addEventListener('fetch', event => {
-                const requestUrl = event.request.url;
-                 console.log('SW (Simple): Fetch interceptado para:', requestUrl);
+                 // Estrategia: Cache First MUY simple, solo para lo cacheado en install
+                 console.log('SW (Minimal): Fetch interceptado para:', event.request.url);
+                 // Determina si la URL solicitada coincide con las cacheadas (considerando la base path)
+                 const isCachedUrl = urlsToCache.some(url => {
+                     // './' se resuelve a la URL base del SW scope
+                     if (url === './') return event.request.url === self.registration.scope;
+                     // Para otros archivos, comprueba si la URL termina con el nombre del archivo cacheado
+                     return event.request.url.endsWith(url);
+                 });
 
-                // Estrategia: Cache First para los recursos cruciales cacheados al instalar
-                if (urlsToCache.some(url => requestUrl.endsWith(url.replace('./','/')))) {
-                     console.log('SW (Simple): Usando Cache First para recurso crucial:', requestUrl);
-                     event.respondWith(
-                         caches.match(event.request).then(response => {
-                             return response || fetch(event.request).then(networkResponse => {
-                                 // Si lo obtenemos de la red, lo cacheamos por si acaso para la próxima vez
-                                 let responseToCache = networkResponse.clone();
-                                 caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
-                                 return networkResponse;
-                             }).catch(() => {
-                                console.error('SW (Simple): Falló al buscar recurso crucial en red y caché:', requestUrl);
-                                // Podríamos devolver una respuesta de error genérica aquí
-                             });
-                         })
-                     );
-                }
-                // Estrategia: Network First para recursos externos (Tailwind, Fonts)
-                else if (externalResources.some(url => requestUrl.startsWith(url))) {
-                    console.log('SW (Simple): Usando Network First para recurso externo:', requestUrl);
-                    event.respondWith(
-                        fetch(event.request).then(networkResponse => {
-                            // Si la red responde bien, cachearlo y devolverlo
-                            let responseToCache = networkResponse.clone();
-                            caches.open(CACHE_NAME).then(cache => cache.put(event.request, responseToCache));
-                             console.log('SW (Simple): Recurso externo obtenido de red y cacheado:', requestUrl);
-                            return networkResponse;
-                        }).catch(() => {
-                            // Si la red falla, intentar servir desde caché
-                            console.log('SW (Simple): Red falló para recurso externo, intentando caché:', requestUrl);
-                            return caches.match(event.request).then(response => {
-                                if (response) {
-                                    console.log('SW (Simple): Sirviendo recurso externo desde caché:', requestUrl);
-                                    return response;
-                                } else {
-                                     console.error('SW (Simple): Recurso externo no encontrado en red ni caché:', requestUrl);
-                                    // Falló todo
-                                }
-                            });
-                        })
-                    );
-                }
-                 // Para cualquier otra petición (ej. el propio manifest incrustado, etc.), simplemente ir a la red
-                 else {
-                     console.log('SW (Simple): Petición no gestionada por estrategias, yendo a red:', requestUrl);
-                     // No llamar a event.respondWith permite que el navegador maneje la petición normalmente
+
+                 if (isCachedUrl) {
+                      console.log('SW (Minimal): Intentando servir desde caché:', event.request.url);
+                      event.respondWith(
+                          caches.match(event.request).then(response => {
+                              // Si está en caché, devolverlo. Si no, ir a red (y no cachear la respuesta)
+                              return response || fetch(event.request).then(networkResponse => {
+                                   console.log('SW (Minimal): Sirviendo desde red (no encontrado en caché):', event.request.url);
+                                   return networkResponse;
+                               }).catch(err => {
+                                   console.error('SW (Minimal): Error buscando en red y caché:', err, event.request.url);
+                               });
+                          })
+                      );
+                 } else {
+                     // Para todo lo demás (Tailwind, Fonts, etc.), simplemente ir a la red
+                     console.log('SW (Minimal): Petición no cacheada, yendo directo a red:', event.request.url);
+                     // No llamamos a event.respondWith, dejamos que el navegador lo maneje
                  }
             });
         `;
-        // --- FIN: Service Worker Simplificado ---
+        // --- FIN: Service Worker Ultra Simplificado ---
 
 
         if ('serviceWorker' in navigator) {
@@ -1468,10 +1443,10 @@
 
                 navigator.serviceWorker.register(swUrl)
                     .then(registration => {
-                        console.log('ServiceWorker registrado con éxito con scope: ', registration.scope);
+                        console.log('ServiceWorker (Minimal) registrado con éxito con scope: ', registration.scope);
                     })
                     .catch(error => {
-                        console.log('Registro de ServiceWorker fallido: ', error);
+                        console.log('Registro de ServiceWorker (Minimal) fallido: ', error);
                     });
             });
         }
